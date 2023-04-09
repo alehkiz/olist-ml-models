@@ -27,7 +27,9 @@ WITH tb_pedido AS (
 )
 
 
-SELECT  idVendedor,
+SELECT
+      '2018-01-01' AS dtReference,
+      idVendedor,
       COUNT(DISTINCT CASE WHEN DATE(COALESCE(dtEntregue, '2018-01-01')) > DATE(dtEstimativaEntrega) THEN idPedido END) / COUNT(DISTINCT CASE WHEN descSituacao = 'delivered' THEN idPedido END) AS pcPedidoAtrasado,
       COUNT(DISTINCT CASE WHEN descSituacao = 'canceled' THEN idPedido END) / COUNT(DISTINCT idPedido) AS pctPedidoCancelado,
       AVG(totalFrete) AS avgFrente,
@@ -38,7 +40,7 @@ SELECT  idVendedor,
       AVG(DATEDIFF(COALESCE(dtEntregue,'2018-01-01'), dtPedido)) AS qtdDiasPedidoEntrega,
       AVG(DATEDIFF(dtEstimativaEntrega, COALESCE(dtEntregue,'2018-01-01'))) AS qtdDiasPromessaEntrega
 FROM tb_pedido
-GROUP BY 1
+GROUP BY 1,2
 
 -- COMMAND ----------
 
